@@ -1,0 +1,8 @@
+openai>=1.40.0
+streamlit
+pandas
+numpy
+scikit-learn
+python-dotenv
+requests
+faiss-cpu
