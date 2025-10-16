@@ -24,14 +24,38 @@ This app is designed to:
 | **M3 – Data Assembly** | Built `movie_texts.json` combining movie title, year, and genre | Provides natural language descriptions for the embedding model |
 | **M4 – Embedding Index** | Generated embeddings via OpenAI API, handled API quota/rate errors, stored in `artifacts/movie_vectors.npy` | Converts each movie into a numerical vector for similarity search |
 | **Repo Hygiene & Git Setup** | Configured `.env`, `.gitignore`, removed large files, and pushed a clean repo to GitHub | Prevents leaking secrets, large files, or intermediate artifacts |
+| **M5 – Retrieval System (kNN)** | Load vectors and metadata to compute top-5 similar movies per query |
+---
+
+## Updates
+## 🏁 Milestone 5 – Interactive Streamlit App
+
+We’ve successfully built and tested the **interactive front-end** for the AI Movie Recommender.
+
+### 🔹 Key Achievements
+- Integrated **Streamlit UI** with the embedding retrieval system.
+- Implemented **Cosine KNN** similarity search for movie embeddings.
+- Added **Quick Examples** and state management using `st.session_state`.
+- Results are now dynamically displayed in a clean, responsive grid.
+- End-to-end recommendation pipeline works locally.
+
+### 🧩 Current Project Flow
+**User Input → Embedding Generation → Cosine Similarity Search → Top Movie Results (Streamlit Display)**
+
+### 🎬 Example Query
+> “romantic drama about memory”  
+✅ Output: *Remember Me (2010), Eternal Sunshine of the Spotless Mind (2004), The Romantics (2010)*
 
 ---
+
+Next up: **Milestone 6 — LLM Summarization Layer**  
+We’ll use an OpenAI model to summarize retrieved movies into a single, human-like movie mood description.
+
 
 ## 🧭 Next Steps
 
 | Upcoming Stage | Goal |
 |----------------|------|
-| **M5 – Retrieval System (kNN)** | Load vectors and metadata to compute top-5 similar movies per query |
 | **M6 – Streamlit UI** | Connect retrieval logic to an app interface |
 | **M7 – LLM Integration** | Add natural-language explanations for recommendations |
 | **M8 – Deployment** | Host app on Streamlit Cloud or GitHub Pages with a public demo link |
