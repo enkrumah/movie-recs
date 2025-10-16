@@ -1,63 +1,82 @@
-# 🎬 AI Movie Recommender (MVP)
+# 🎬 AI Movie Recommendation System (MVP)
 
-A small educational project to learn how LLMs and embeddings power recommendation systems.
-Built in **Python** with **Streamlit**, **OpenAI Embeddings**, and **k-Nearest Neighbors (kNN)**.
-
----
-
-## 🔧 Setup Steps Done
-
-1. **Environment**
-   - Created `conda` env `movie-recs`
-   - Installed dependencies from `requirements.txt`
-   - Verified Streamlit runs (`streamlit run app.py`)
-
-2. **Dataset**
-   - Downloaded MovieLens *latest-small* dataset → `data/ml-latest-small/`
-   - Loaded CSVs with Pandas for exploration.
-
-3. **Preprocessing**
-   - Built a unified `text_embed` field combining movie title + genres.
-
-4. **Secrets**
-   - Added `.env` with `OPENAI_API_KEY=sk-...`
-   - Tested with `load_dotenv()`.
-
-5. **Embeddings**
-   - Generated OpenAI embeddings (`text-embedding-3-large`)
-   - Saved outputs to `artifacts/`:
-     - `movie_vectors.npy`
-     - `movie_ids.json`
-     - `movie_texts.json`
-   - Sanity-checked dimensions and sample IDs.
+This project builds an **AI-powered movie recommender** using OpenAI embeddings, k-Nearest Neighbors, and Streamlit.  
+The goal is to demonstrate how natural language can drive movie discovery — users can type a description or title, and the model retrieves similar films based on semantic similarity.
 
 ---
 
-## 🚀 Next Steps
+## 🧱 Project Summary
 
-**M5 – Retrieval**
-- Load vectors and fit a `NearestNeighbors(metric="cosine")`.
-- Test sample queries in console.
-
-**M6 – UI Integration**
-- Connect kNN to Streamlit text box.
-- Display top-k movie recommendations.
-
-**M7 – LLM Enhancement**
-- Parse mood / constraints.
-- Generate “why this fits” explanations via GPT.
-
-**M8 – Logging & Feedback**
-- Save user queries and results.
-- Prepare for small Streamlit Cloud deploy.
+This app is designed to:
+- Use **OpenAI embeddings** to numerically represent movie descriptions.
+- Store and search those embeddings efficiently using **vector similarity**.
+- Serve recommendations through an interactive **Streamlit UI**.
+- Be modular enough for future extensions (e.g., RAG pipelines, user-based personalization).
 
 ---
+
+## 🧩 Milestones & Summary (Completed so far)
+
+| Stage | What We Did | Why It Mattered |
+|-------|--------------|----------------|
+| **M1 – Environment Setup** | Created virtual environment, folder structure (`src/`, `data/`, `artifacts/`), and installed dependencies | Establishes a clean, modular workspace for reproducibility |
+| **M2 – Dependencies & Data** | Installed `openai`, `pandas`, `numpy`, `scikit-learn`, and `streamlit`; loaded and cleaned movie dataset | Ensures the environment can support embeddings, vector search, and a web app |
+| **M3 – Data Assembly** | Built `movie_texts.json` combining movie title, year, and genre | Provides natural language descriptions for the embedding model |
+| **M4 – Embedding Index** | Generated embeddings via OpenAI API, handled API quota/rate errors, stored in `artifacts/movie_vectors.npy` | Converts each movie into a numerical vector for similarity search |
+| **Repo Hygiene & Git Setup** | Configured `.env`, `.gitignore`, removed large files, and pushed a clean repo to GitHub | Prevents leaking secrets, large files, or intermediate artifacts |
+
+---
+
+## 🧭 Next Steps
+
+| Upcoming Stage | Goal |
+|----------------|------|
+| **M5 – Retrieval System (kNN)** | Load vectors and metadata to compute top-5 similar movies per query |
+| **M6 – Streamlit UI** | Connect retrieval logic to an app interface |
+| **M7 – LLM Integration** | Add natural-language explanations for recommendations |
+| **M8 – Deployment** | Host app on Streamlit Cloud or GitHub Pages with a public demo link |
+
+---
+
+## 🚀 How to Run (update as you go)
+
+```bash
+# Activate environment
+conda activate movie-recs
+
+# Run Streamlit app
+streamlit run app.py
+
+
+---
+
+| Date       | Update                                                           |
+| ---------- | ---------------------------------------------------------------- |
+| 2025-10-16 | Finished M4, cleaned repo, added .gitignore, committed to GitHub |
+| 2025-10-15 | Dataset finalized, initial environment setup complete            |
+| 2025-10-14 | Repository initialized and directory structure created           |
+
+
+Tech Stack
+Core: Python, Streamlit, OpenAI API, scikit-learn
+Data Handling: Pandas, NumPy
+Infrastructure: Git, Conda
+Future Additions: Pinecone / FAISS (vector DB), LangChain integration
+
+
+
 
 ## 🧠 Learning Goals
 - Practice building a multimodal recommendation workflow.
 - Use embeddings + KNN for semantic search.
 - Integrate OpenAI models into a small full-stack prototype.
 
+This project isn’t just about building a recommender — it’s about understanding how semantic similarity, vector representations, and retrieval pipelines can evolve into full-scale AI products.
+Every milestone mirrors the real-world process of building AI-driven apps: from prototype to deployment with transparency, modularity, and best practices.
+
 ---
 
-_Progress: ~60% complete (Embeddings done; Retrieval next)._
+## Author
+Ebenezer Nkrumah Amankwah
+MBA Candidate @ Emory Goizueta | Product & AI Systems Builder
+GitHub: @enkrumah
