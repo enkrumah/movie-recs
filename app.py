@@ -5,6 +5,8 @@
 import streamlit as st
 from src.data_loader import load_movies
 from src.recommender import recommend_movies
+from src.llm import summarize_recommendations
+
 
 # ---- Streamlit page setup ----
 st.set_page_config(page_title="AI Movie Recommender", page_icon="🎬", layout="wide")
@@ -58,12 +60,18 @@ user_text = st.text_area(
 k = st.slider("Number of results", min_value=3, max_value=10, value=5, step=1)
 
 # 5) Action: manual click OR auto-search from example
+
+@st.cache_data(show_spinner=False, ttl=600)
+def _cached_summary(query: str, movie_texts: tuple[str, ...], per_movie: bool):
+    recs_for_llm = [{"text": t} for t in movie_texts]
+    return summarize_recommendations(query, recs_for_llm, include_per_movie=per_movie)
+
 do_search = st.button("Recommend") or st.session_state.auto_search
 if do_search:
     # Clear the auto flag so we don’t loop
     st.session_state.auto_search = False
-
     query = st.session_state.query_text.strip()
+
     if not query:
         st.warning("Please enter a description to get recommendations.")
     else:
@@ -77,6 +85,23 @@ if do_search:
         if not recs:
             st.info("No results found. Try a different description.")
         else:
+            # ---- LLM summary (add this) ----
+            movie_texts = tuple(r["text"] for r in recs)
+            with st.spinner("Summarizing the vibe…"):
+                summary_text, per_lines = _cached_summary(query, movie_texts, per_movie=False)
+            if summary_text:
+                st.markdown(
+                    f"""
+                    <div style="background:#0f172a;border:1px solid #23324d;
+                                padding:14px 16px;border-radius:14px;margin:16px 0;">
+                    <div style="font-weight:700;margin-bottom:8px;">🧠 Why these picks fit your vibe</div>
+                    <div style="color:#cbd5e1;">{summary_text}</div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+            # ---- end LLM summary ----
+
             st.subheader("🎯 Top Picks for You")
             cols = st.columns(2)
             for idx, r in enumerate(recs):
@@ -85,14 +110,15 @@ if do_search:
                         f"""
                         <div style="background:#111;border:1px solid #2a2a2a;
                                     padding:14px 16px;border-radius:14px;margin-bottom:12px;">
-                          <div style="font-weight:700;font-size:1.05rem;margin-bottom:6px;">
+                        <div style="font-weight:700;font-size:1.05rem;margin-bottom:6px;">
                             {r['text']}
-                          </div>
-                          <div style="color:#9aa0a6;">Similarity: {r['similarity']:.3f}</div>
+                        </div>
+                        <div style="color:#9aa0a6;">Similarity: {r['similarity']:.3f}</div>
                         </div>
                         """,
                         unsafe_allow_html=True,
                     )
+
 
 
 # ---- Footer ----

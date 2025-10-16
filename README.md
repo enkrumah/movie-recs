@@ -15,6 +15,13 @@ This app is designed to:
 
 ---
 
+### 🧩 Current Project Flow
+**User Input → Embedding Generation → Cosine Similarity Search → Top Movie Results (Streamlit Display)**
+
+### 🎬 Example Query
+> “romantic drama about memory”  
+✅ Output: *Remember Me (2010), Eternal Sunshine of the Spotless Mind (2004), The Romantics (2010)*
+
 ## 🧩 Milestones & Summary (Completed so far)
 
 | Stage | What We Did | Why It Mattered |
@@ -39,12 +46,11 @@ We’ve successfully built and tested the **interactive front-end** for the AI M
 - Results are now dynamically displayed in a clean, responsive grid.
 - End-to-end recommendation pipeline works locally.
 
-### 🧩 Current Project Flow
-**User Input → Embedding Generation → Cosine Similarity Search → Top Movie Results (Streamlit Display)**
+### M6 – LLM Reasoning Layer (Complete ✅)
+- Added `src/llm.py` to generate short GPT-based summaries.
+- Integrated reasoning output above recommendations in `app.py`.
+- Summaries now explain *why* the retrieved movies fit the user's mood or query.
 
-### 🎬 Example Query
-> “romantic drama about memory”  
-✅ Output: *Remember Me (2010), Eternal Sunshine of the Spotless Mind (2004), The Romantics (2010)*
 
 ---
 
