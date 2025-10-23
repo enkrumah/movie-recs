@@ -1,82 +1,76 @@
 # 🎬 AI Movie Recommendation System (MVP)
 
-This project builds an **AI-powered movie recommender** using OpenAI embeddings, k-Nearest Neighbors, and Streamlit.  
-The goal is to demonstrate how natural language can drive movie discovery — users can type a description or title, and the model retrieves similar films based on semantic similarity.
+An **AI-powered movie recommender** built with OpenAI embeddings, cosine-similarity retrieval, and Streamlit.  
+This project demonstrates how natural language understanding can drive movie discovery — users simply describe what they’re in the mood for, and the model retrieves semantically similar films.
 
 ---
 
 ## 🧱 Project Summary
 
-This app is designed to:
-- Use **OpenAI embeddings** to numerically represent movie descriptions.
-- Store and search those embeddings efficiently using **vector similarity**.
-- Serve recommendations through an interactive **Streamlit UI**.
-- Be modular enough for future extensions (e.g., RAG pipelines, user-based personalization).
+This app:
+- Uses **OpenAI embeddings** to numerically represent movie descriptions.
+- Performs efficient **vector similarity search** via cosine distance.
+- Serves recommendations through an interactive **Streamlit UI**.
+- Is modular for future extensions (e.g., RAG pipelines, personalization, or live databases).
 
 ---
 
-### 🧩 Current Project Flow
-**User Input → Embedding Generation → Cosine Similarity Search → Top Movie Results (Streamlit Display)**
+### 🧩 System Flow
+**User Input → Embedding Generation → Cosine Similarity Search → LLM Summary → Top Movie Recommendations**
 
-### 🎬 Example Query
+### 🎥 Example Query
 > “romantic drama about memory”  
 ✅ Output: *Remember Me (2010), Eternal Sunshine of the Spotless Mind (2004), The Romantics (2010)*
 
-## 🧩 Milestones & Summary (Completed so far)
-
-| Stage | What We Did | Why It Mattered |
-|-------|--------------|----------------|
-| **M1 – Environment Setup** | Created virtual environment, folder structure (`src/`, `data/`, `artifacts/`), and installed dependencies | Establishes a clean, modular workspace for reproducibility |
-| **M2 – Dependencies & Data** | Installed `openai`, `pandas`, `numpy`, `scikit-learn`, and `streamlit`; loaded and cleaned movie dataset | Ensures the environment can support embeddings, vector search, and a web app |
-| **M3 – Data Assembly** | Built `movie_texts.json` combining movie title, year, and genre | Provides natural language descriptions for the embedding model |
-| **M4 – Embedding Index** | Generated embeddings via OpenAI API, handled API quota/rate errors, stored in `artifacts/movie_vectors.npy` | Converts each movie into a numerical vector for similarity search |
-| **Repo Hygiene & Git Setup** | Configured `.env`, `.gitignore`, removed large files, and pushed a clean repo to GitHub | Prevents leaking secrets, large files, or intermediate artifacts |
-| **M5 – Retrieval System (kNN)** | Load vectors and metadata to compute top-5 similar movies per query |
 ---
 
-## Updates
-## 🏁 Milestone 5 – Interactive Streamlit App
+## 🚀 Development Milestones
 
-We’ve successfully built and tested the **interactive front-end** for the AI Movie Recommender.
-
-### 🔹 Key Achievements
-- Integrated **Streamlit UI** with the embedding retrieval system.
-- Implemented **Cosine KNN** similarity search for movie embeddings.
-- Added **Quick Examples** and state management using `st.session_state`.
-- Results are now dynamically displayed in a clean, responsive grid.
-- End-to-end recommendation pipeline works locally.
-
-### M6 – LLM Reasoning Layer (Complete ✅)
-- Added `src/llm.py` to generate short GPT-based summaries.
-- Integrated reasoning output above recommendations in `app.py`.
-- Summaries now explain *why* the retrieved movies fit the user's mood or query.
-
+| # | Milestone | Description | Status |
+|---|------------|-------------|--------|
+| **M1** | Environment Setup | Created virtual environment, folder structure (`src/`, `data/`, `artifacts/`), installed dependencies. | ✅ |
+| **M2** | Dependencies & Data | Installed `openai`, `pandas`, `numpy`, `scikit-learn`, and `streamlit`; loaded and cleaned movie dataset. | ✅ |
+| **M3** | Data Assembly | Built `movie_texts.json` combining movie title, year, and genre for embedding input. | ✅ |
+| **M4** | Embedding Index | Generated and stored embeddings via OpenAI API (`artifacts/movie_vectors.npy`); handled rate limits. | ✅ |
+| **M5** | Interactive Streamlit App | Integrated front-end with retrieval engine using cosine similarity and KNN search. Added quick examples and responsive layout. | ✅ |
+| **M6** | LLM Reasoning Layer | Added `src/llm.py` to generate natural-language summaries explaining *why* the recommendations fit. Integrated results directly above movie cards in the UI. | ✅ |
+| **M7** | Repo Hygiene & Git Setup | Configured `.env`, `.gitignore`, cleaned repo, and removed large artifacts. | ✅ |
+| **M8** | Deployment (Next) | Host on Streamlit Cloud or Hugging Face Spaces for a public demo. | 🔜 |
 
 ---
 
-Next up: **Milestone 6 — LLM Summarization Layer**  
-We’ll use an OpenAI model to summarize retrieved movies into a single, human-like movie mood description.
+## Key Updates (M5–M6)
 
+### 🏁 Interactive Streamlit App
+- Integrated **Streamlit UI** with the retrieval pipeline.  
+- Added **Quick Examples** and `st.session_state` for dynamic interaction.  
+- Results display in a clean, responsive grid.  
+- End-to-end recommendation pipeline now works locally.
 
-## 🧭 Next Steps
+### LLM Reasoning Layer
+- Added `src/llm.py` to generate short GPT-based explanations.  
+- Integrated reasoning output above recommendations in `app.py`.  
+- Summaries explain *why* retrieved movies match the user’s vibe.
+
+---
+
+## Next Steps
 
 | Upcoming Stage | Goal |
 |----------------|------|
-| **M6 – Streamlit UI** | Connect retrieval logic to an app interface |
-| **M7 – LLM Integration** | Add natural-language explanations for recommendations |
-| **M8 – Deployment** | Host app on Streamlit Cloud or GitHub Pages with a public demo link |
+| **M8 – Deployment** | Host app on Streamlit Cloud or Hugging Face Spaces for a public demo. |
+| **Future Iterations** | Explore MCP connectors to query live databases; add personalization, per-movie insights, and analytics dashboards. |
 
 ---
 
-## 🚀 How to Run (update as you go)
+## How to Run
 
 ```bash
-# Activate environment
+# 1. Activate your environment
 conda activate movie-recs
 
-# Run Streamlit app
+# 2. Run the Streamlit app
 streamlit run app.py
-
 
 ---
 
@@ -87,22 +81,19 @@ streamlit run app.py
 | 2025-10-14 | Repository initialized and directory structure created           |
 
 
-Tech Stack
+## Tech Stack
 Core: Python, Streamlit, OpenAI API, scikit-learn
 Data Handling: Pandas, NumPy
-Infrastructure: Git, Conda
-Future Additions: Pinecone / FAISS (vector DB), LangChain integration
+Version Control: Git, Conda
+Future Additions: FAISS / Pinecone (vector DB), LangChain, MCP connectors
 
 
+## Learning Goals
+- Build a semantic recommender using embeddings + cosine KNN.
+- Connect retrieval and reasoning layers (RAG-like architecture).
+- Translate abstract AI concepts — embeddings, distance metrics, interpretability — into a functional product.
 
-
-## 🧠 Learning Goals
-- Practice building a multimodal recommendation workflow.
-- Use embeddings + KNN for semantic search.
-- Integrate OpenAI models into a small full-stack prototype.
-
-This project isn’t just about building a recommender — it’s about understanding how semantic similarity, vector representations, and retrieval pipelines can evolve into full-scale AI products.
-Every milestone mirrors the real-world process of building AI-driven apps: from prototype to deployment with transparency, modularity, and best practices.
+This project mirrors real-world AI development: structured milestones, modular design, and a focus on explainability and user experience.
 
 ---
 
