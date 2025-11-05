@@ -6,6 +6,7 @@ import streamlit as st
 from src.data_loader import load_movies
 from src.recommender import recommend_movies
 from src.llm import summarize_recommendations
+from src.llm import _get_client
 
 
 # ---- Streamlit page setup ----
@@ -48,13 +49,56 @@ for i, ex in enumerate(examples):
         if hasattr(st, "rerun"):
             st.rerun()
 
-# 3) Now create the text area bound to the same key
+
+# 3) Now create the text area
+
+# ------------------------------------------------
+# Prefill logic (add this right above your text area)
+# ------------------------------------------------
+if "pending_text" in st.session_state:
+    prefill = st.session_state.pop("pending_text")  # take and remove it
+else:
+    prefill = ""  # default empty
+
+# ------------------------------------------------
+# Text area with optional prefill
+# ------------------------------------------------
 user_text = st.text_area(
     "Describe what you're in the mood for:",
     height=120,
     placeholder="romantic drama about memory",
-    key="query_text",  # uses the value we set above (if any)
+    key="query_text",
+    value=prefill,  # ✅ safe prefill value
 )
+
+
+# ---------------------------------------------
+# AI-powered prompt suggestions (Responses API)
+# ---------------------------------------------
+if user_text and len(user_text.split()) <= 6:
+    with st.spinner("Thinking of suggestions..."):
+        try:
+            client = _get_client()
+            suggestion_resp = client.responses.create(
+                model="gpt-4o-mini",
+                input=f"Suggest 3 short, distinct movie-related prompts that could complete or expand the phrase: '{user_text}'. "
+                      f"Keep them under 8 words each and movie-focused.",
+                temperature=0.7,
+            )
+            raw_text = suggestion_resp.output_text.strip()
+            suggestions = [s.strip(" -•") for s in raw_text.split("\n") if s.strip()]
+        except Exception as e:
+            st.error(f"Error generating suggestions: {e}")
+            suggestions = []
+
+    if suggestions:
+        st.caption("💡 AI suggestions:")
+        cols = st.columns(len(suggestions))
+        for i, s in enumerate(suggestions):
+            if cols[i].button(s, key=f"suggestion_{i}"):
+                st.session_state["pending_text"] = s
+                st.experimental_rerun()
+
 
 # 4) Other controls
 k = st.slider("Number of results", min_value=3, max_value=10, value=5, step=1)
