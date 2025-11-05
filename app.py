@@ -53,51 +53,65 @@ for i, ex in enumerate(examples):
 # 3) Now create the text area
 
 # ------------------------------------------------
-# Prefill logic (add this right above your text area)
+# Prefill logic (must run BEFORE the text area)
 # ------------------------------------------------
 if "pending_text" in st.session_state:
-    prefill = st.session_state.pop("pending_text")  # take and remove it
-else:
-    prefill = ""  # default empty
+    # put the suggestion directly into the widget's key before creation
+    st.session_state.query_text = st.session_state.pop("pending_text")
 
 # ------------------------------------------------
-# Text area with optional prefill
+# Text area (no 'value=' when a key is used)
 # ------------------------------------------------
 user_text = st.text_area(
     "Describe what you're in the mood for:",
     height=120,
     placeholder="romantic drama about memory",
-    key="query_text",
-    value=prefill,  # ✅ safe prefill value
+    key="query_text",   # the widget will read from st.session_state.query_text
 )
 
 
 # ---------------------------------------------
 # AI-powered prompt suggestions (Responses API)
 # ---------------------------------------------
-if user_text and len(user_text.split()) <= 6:
-    with st.spinner("Thinking of suggestions..."):
-        try:
-            client = _get_client()
-            suggestion_resp = client.responses.create(
-                model="gpt-4o-mini",
-                input=f"Suggest 3 short, distinct movie-related prompts that could complete or expand the phrase: '{user_text}'. "
-                      f"Keep them under 8 words each and movie-focused.",
-                temperature=0.7,
-            )
-            raw_text = suggestion_resp.output_text.strip()
-            suggestions = [s.strip(" -•") for s in raw_text.split("\n") if s.strip()]
-        except Exception as e:
-            st.error(f"Error generating suggestions: {e}")
-            suggestions = []
+if user_text:
+    # Re-generate suggestions only if user_text changed
+    if "last_prefix" not in st.session_state or st.session_state["last_prefix"] != user_text:
+        with st.spinner("Thinking of suggestions..."):
+            try:
+                client = _get_client()
+                suggestion_resp = client.responses.create(
+                    model="gpt-4o-mini",
+                    input=(
+                        f"Suggest 3 short, distinct movie-related prompts that could complete "
+                        f"or expand the phrase: '{user_text}'. Keep them under 8 words each and movie-focused."
+                    ),
+                    temperature=0.7,
+                )
+                raw_text = suggestion_resp.output_text.strip()
+                suggestions = [s.strip(" -•") for s in raw_text.split("\n") if s.strip()]
+            except Exception as e:
+                st.error(f"Error generating suggestions: {e}")
+                suggestions = []
+
+        # cache them
+        st.session_state["last_suggestions"] = suggestions
+        st.session_state["last_prefix"] = user_text
+    else:
+        # reuse cached suggestions
+        suggestions = st.session_state.get("last_suggestions", [])
 
     if suggestions:
         st.caption("💡 AI suggestions:")
         cols = st.columns(len(suggestions))
+        clicked = None
         for i, s in enumerate(suggestions):
-            if cols[i].button(s, key=f"suggestion_{i}"):
-                st.session_state["pending_text"] = s
-                st.experimental_rerun()
+            if cols[i].button(s, key=f"suggestion_{i}_{hash(s)}"):
+                clicked = s
+        if clicked:
+            st.session_state["pending_text"] = clicked
+            st.session_state["auto_search"] = True
+            st.rerun()
+
 
 
 # 4) Other controls
