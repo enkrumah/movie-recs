@@ -9,7 +9,7 @@ import pandas as pd
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from .data_loader import load_movies, build_movie_text
+from src.data_loader import load_movies, build_movie_text
 
 # -------------------------------
 # CONFIG
