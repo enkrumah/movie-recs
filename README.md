@@ -1,103 +1,212 @@
 # 🎬 AI Movie Recommendation System (MVP)
 
-An **AI-powered movie recommender** built with OpenAI embeddings, cosine-similarity retrieval, and Streamlit.  
-This project demonstrates how natural language understanding can drive movie discovery — users simply describe what they’re in the mood for, and the model retrieves semantically similar films.
+An AI-based movie recommender built with **OpenAI embeddings**, **cosine similarity retrieval**, and **Streamlit**.  
+Users describe the kind of movie they want to watch, and the system retrieves semantically relevant films — then explains _why_ they match.
 
 ---
 
-## 🧱 Project Summary
+# 🧠 System Overview
 
-This app:
-- Uses **OpenAI embeddings** to numerically represent movie descriptions.
-- Performs efficient **vector similarity search** via cosine distance.
-- Serves recommendations through an interactive **Streamlit UI**.
-- Is modular for future extensions (e.g., RAG pipelines, personalization, or live databases).
+**User Input → Embedding Generation → Cosine Similarity Search → LLM Explanation → Ranked Output**
 
----
-
-### 🧩 System Flow
-**User Input → Embedding Generation → Cosine Similarity Search → LLM Summary → Top Movie Recommendations**
-
-### 🎥 Example Query
-> “romantic drama about memory”  
-✅ Output: *Remember Me (2010), Eternal Sunshine of the Spotless Mind (2004), The Romantics (2010)*
+Example Query:  
+“romantic drama about memory” →  
+Eternal Sunshine of the Spotless Mind, Remember Me, The Romantics.
 
 ---
 
-## 🚀 Development Milestones
+# 🗂 Project Structure
 
-| # | Milestone | Description | Status |
-|---|------------|-------------|--------|
-| **M1** | Environment Setup | Created virtual environment, folder structure (`src/`, `data/`, `artifacts/`), installed dependencies. | ✅ |
-| **M2** | Dependencies & Data | Installed `openai`, `pandas`, `numpy`, `scikit-learn`, and `streamlit`; loaded and cleaned movie dataset. | ✅ |
-| **M3** | Data Assembly | Built `movie_texts.json` combining movie title, year, and genre for embedding input. | ✅ |
-| **M4** | Embedding Index | Generated and stored embeddings via OpenAI API (`artifacts/movie_vectors.npy`); handled rate limits. | ✅ |
-| **M5** | Interactive Streamlit App | Integrated front-end with retrieval engine using cosine similarity and KNN search. Added quick examples and responsive layout. | ✅ |
-| **M6** | LLM Reasoning Layer | Added `src/llm.py` to generate natural-language summaries explaining *why* the recommendations fit. Integrated results directly above movie cards in the UI. | ✅ |
-| **M7** | Repo Hygiene & Git Setup | Configured `.env`, `.gitignore`, cleaned repo, and removed large artifacts. | ✅ |
-| **M8** | Deployment (Next) | Host on Streamlit Cloud or Hugging Face Spaces for a public demo. | 🔜 |
-
----
-
-## Key Updates (M5–M6)
-
-### 🏁 Interactive Streamlit App
-- Integrated **Streamlit UI** with the retrieval pipeline.  
-- Added **Quick Examples** and `st.session_state` for dynamic interaction.  
-- Results display in a clean, responsive grid.  
-- End-to-end recommendation pipeline now works locally.
-
-### LLM Reasoning Layer
-- Added `src/llm.py` to generate short GPT-based explanations.  
-- Integrated reasoning output above recommendations in `app.py`.  
-- Summaries explain *why* retrieved movies match the user’s vibe.
+```
+movie-recs/
+│
+├── app.py                     # Streamlit UI (main app)
+│
+├── artifacts/                 # Generated artifacts (not tracked in Git)
+│   ├── movie_vectors.npy
+│   ├── movie_ids.json
+│   └── movie_texts.json
+│
+├── data/
+│   ├── ml-latest-small/       # MovieLens dataset
+│   ├── ml-latest-small.zip
+│   └── embed_index.py         # Embedding builder script
+│
+├── src/
+│   ├── data_loader.py         # Loads dataset + metadata
+│   ├── recommender.py         # Similarity search
+│   └── llm.py                 # Explanation + suggestions (OpenAI)
+│
+├── README.md
+└── requirements.txt
+```
 
 ---
 
-## Next Steps
+# 📌 Project Milestones
 
-| Upcoming Stage | Goal |
-|----------------|------|
-| **M8 – Deployment** | Host app on Streamlit Cloud or Hugging Face Spaces for a public demo. |
-| **Future Iterations** | Explore MCP connectors to query live databases; add personalization, per-movie insights, and analytics dashboards. |
+| #   | Milestone                | Description                                          | Status             |
+| --- | ------------------------ | ---------------------------------------------------- | ------------------ |
+| M1  | Environment Setup        | Conda env, folder structure, dependencies.           | ✅                 |
+| M2  | Data Loading             | Loaded MovieLens dataset and extracted metadata.     | ✅                 |
+| M3  | Data Assembly            | Generated `movie_texts.json` as embedding input.     | ✅                 |
+| M4  | Embedding Index          | Produced `movie_vectors.npy`, `movie_ids.json`.      | ✅                 |
+| M5  | UI Integration           | Streamlit interface + quick examples.                | ✅                 |
+| M6  | LLM Reasoning Layer      | Explanations + suggestions via OpenAI.               | ✅                 |
+| M7  | Repo Hygiene             | Cleaned repo, added `.gitignore`, removed artifacts. | ✅                 |
+| M8  | **Ranking + Evaluation** | Multi-signal ranker + retrieval metrics.             | 🔜 (current focus) |
+| M9  | **Deployment**           | Streamlit Cloud or HuggingFace Spaces.               | 🔜                 |
 
 ---
 
-## How to Run
+# 🔐 API Key Configuration
 
-```bash
-# 1. Activate your environment
+Your OpenAI key is **not included** in the repo.
+
+Create a `.env` file in the project root:
+
+```
+OPENAI_API_KEY=sk-xxxx
+```
+
+This is loaded automatically via `src/llm.py`.
+
+Without this, prompts, suggestions, and explanations will fail.
+
+---
+
+# 🧩 Generating Embedding Artifacts
+
+Artifacts are **not stored in Git** and must be generated locally.
+
+Run:
+
+```
+python data/embed_index.py
+```
+
+This creates:
+
+```
+artifacts/
+    movie_vectors.npy
+    movie_ids.json
+    movie_texts.json
+```
+
+These files are required before running `app.py`.
+
+---
+
+# ▶️ Running the Application
+
+```
 conda activate movie-recs
-
-# 2. Run the Streamlit app
 streamlit run app.py
+```
+
+A local browser window will open automatically.
 
 ---
 
-| Date       | Update                                                           |
-| ---------- | ---------------------------------------------------------------- |
-| 2025-10-16 | Finished M4, cleaned repo, added .gitignore, committed to GitHub |
-| 2025-10-15 | Dataset finalized, initial environment setup complete            |
-| 2025-10-14 | Repository initialized and directory structure created           |
+# ✨ Current Features
 
+### ✅ Natural Language Search
 
-## Tech Stack
-Core: Python, Streamlit, OpenAI API, scikit-learn
-Data Handling: Pandas, NumPy
-Version Control: Git, Conda
-Future Additions: FAISS / Pinecone (vector DB), LangChain, MCP connectors
+Users describe the movie they want — the system retrieves and ranks matches.
 
+### ✅ Cosine Similarity Retrieval
 
-## Learning Goals
-- Build a semantic recommender using embeddings + cosine KNN.
-- Connect retrieval and reasoning layers (RAG-like architecture).
-- Translate abstract AI concepts — embeddings, distance metrics, interpretability — into a functional product.
+Efficient nearest-neighbor search over normalized embeddings.
 
-This project mirrors real-world AI development: structured milestones, modular design, and a focus on explainability and user experience.
+### ✅ LLM “Why This Fits Your Vibe”
+
+Short explanations describing why the movies match the user's request.
+
+### ✅ AI Prompt Suggestions
+
+If users type a short fragment, the system suggests full search prompts.
+
+### ✅ Clean, Responsive UI
+
+Two-column movie grid, quick examples, and session-state behavior.
 
 ---
 
-## Author
-Ebenezer Nkrumah Amankwah
-MBA Candidate @ Emory Goizueta | Product & AI Systems Builder
-GitHub: @enkrumah
+# 🧮 Upcoming Feature: Ranking & Evaluation (M8)
+
+The current system ranks solely by **similarity**.  
+M8 introduces a **multi-signal ranking layer**:
+
+### Ranking Signals
+
+| Signal             | Description                                | Why it matters                                    |
+| ------------------ | ------------------------------------------ | ------------------------------------------------- |
+| Similarity         | Embedding-based relevance                  | Core relevance driver                             |
+| Recency            | Extracted from movie release year          | Users prefer modern content                       |
+| Genre Match        | Genre alignment with user query            | Prevents semantically-close but genre-wrong films |
+| Keyword Match      | Lexical match between query + title/genres | Useful for short or ambiguous queries             |
+| LLM Semantic Score | Quality of explanation alignment           | Adds interpretability & nuance                    |
+
+The output becomes a **weighted ranking score**, not just cosine similarity.
+
+---
+
+# 📊 Evaluation Suite (M8)
+
+These metrics will be added:
+
+- **nDCG@k** – industry standard for ranking quality
+- **Precision@k / Recall@k**
+- **Hit Rate@k**
+- **MRR** (optional)
+- **Coverage** (optional)
+
+These align with interview expectations for retrieval/ranking roles.
+
+---
+
+# 🚀 Deployment (M9)
+
+Two recommended options:
+
+### 1. **Streamlit Cloud**
+
+Pros: fast, free, perfect for demos.  
+Cons: limited compute.
+
+### 2. **HuggingFace Spaces**
+
+Pros: good GPU/CPU options, clean UI hosting.  
+Cons: slightly more setup.
+
+Both work with local artifacts — or with a future MCP-powered remote database.
+
+---
+
+# 🧰 Tech Stack
+
+**Core:** Python, NumPy, Pandas  
+**Retrieval:** OpenAI Embeddings, cosine similarity  
+**LLM Reasoning:** OpenAI Responses API  
+**UI:** Streamlit  
+**Future:** FastAPI, React, Pinecone, MCP Connectors, FAISS, two-stage retrieval
+
+---
+
+# 🎯 Learning Goals
+
+- Build a semantic retrieval system from scratch.
+- Understand embeddings, vector search, and ranking signals.
+- Implement evaluation metrics used in real-world ranking teams.
+- Build an end-to-end AI product from dataset → UI → reasoning layer.
+- Prepare for a scalable V2 architecture with proper layering.
+
+---
+
+# 👤 Author
+
+**Ebenezer Nkrumah Amankwah**  
+MBA Candidate @ Emory Goizueta  
+Product & AI Systems Builder  
+GitHub: **@enkrumah**
