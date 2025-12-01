@@ -166,6 +166,7 @@ Two-column movie grid, quick examples, and session-state behavior.
 ### ✅ Latency Tracking
 
 Real-time performance metrics displayed after each search:
+
 ```
 ⚡ Found 5 movies in 0.43s (Search: 0.31s → Summary: 0.12s)
 ```
