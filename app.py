@@ -2,6 +2,7 @@
 # 🎬 AI Movie Recommender (MVP)
 # -------------------------------
 
+import time
 import streamlit as st
 from src.data_loader import load_movies
 from src.recommender import recommend_movies
@@ -142,23 +143,31 @@ if do_search:
     if not query:
         st.warning("Please enter a description to get recommendations.")
     else:
+        # Initialize timing variables
+        retrieval_time = 0.0
+        summary_time = 0.0
+        
         # Choose retrieval method based on Smart Mode toggle
         if smart_mode:
             with st.spinner("🧠 Smart ranking in progress... (retrieving → ranking → AI scoring)"):
                 try:
+                    t_start = time.perf_counter()
                     recs = retrieve_rank_llm(
                         query,
                         k_retrieve=20,
                         k_rerank=10,
                         k_final=k,
                     )
+                    retrieval_time = time.perf_counter() - t_start
                 except Exception as e:
                     st.error(f"⚠️ Error during smart ranking: {e}")
                     recs = []
         else:
             with st.spinner("Finding matching movies..."):
                 try:
+                    t_start = time.perf_counter()
                     recs = recommend_movies(query, k=k)
+                    retrieval_time = time.perf_counter() - t_start
                 except Exception as e:
                     st.error(f"⚠️ Error during recommendation: {e}")
                     recs = []
@@ -169,7 +178,19 @@ if do_search:
             # ---- LLM summary ----
             movie_texts = tuple(r["text"] for r in recs)
             with st.spinner("Summarizing the vibe…"):
+                t_start = time.perf_counter()
                 summary_text, per_lines = _cached_summary(query, movie_texts, per_movie=False)
+                summary_time = time.perf_counter() - t_start
+            
+            # ---- Latency display ----
+            total_time = retrieval_time + summary_time
+            if smart_mode:
+                latency_text = f"⚡ Found {len(recs)} movies in **{total_time:.2f}s** (Retrieve+Rank: {retrieval_time:.2f}s → Summary: {summary_time:.2f}s)"
+            else:
+                latency_text = f"⚡ Found {len(recs)} movies in **{total_time:.2f}s** (Search: {retrieval_time:.2f}s → Summary: {summary_time:.2f}s)"
+            
+            st.caption(latency_text)
+            
             if summary_text:
                 st.markdown(
                     f"""
