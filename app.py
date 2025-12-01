@@ -451,7 +451,7 @@ for i, ex in enumerate(examples):
     if cols[i].button(ex.title(), key=f"ex_{i}"):
         st.session_state.query_text = ex
         st.session_state.auto_search = True
-            st.rerun()
+        st.rerun()
 
 # Text area
 if "pending_text" in st.session_state:
@@ -493,8 +493,8 @@ if user_text:
         for i, s in enumerate(suggestions):
             if cols[i].button(s, key=f"sug_{i}_{hash(s)}"):
                 st.session_state["pending_text"] = s
-                st.session_state["auto_search"] = True
-                st.rerun()
+            st.session_state["auto_search"] = True
+            st.rerun()
 
 # Controls
 col1, col2 = st.columns([2, 1])
@@ -534,11 +534,11 @@ if do_search:
             with st.spinner("Finding movies..."):
                 try:
                     t_start = time.perf_counter()
-                    recs = recommend_movies(query, k=k)
+                recs = recommend_movies(query, k=k)
                     retrieval_time = time.perf_counter() - t_start
-                except Exception as e:
+            except Exception as e:
                     st.error(f"Error: {e}")
-                    recs = []
+                recs = []
 
         if not recs:
             st.info("No results found. Try a different description.")
