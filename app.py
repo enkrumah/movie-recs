@@ -220,6 +220,26 @@ if do_search:
 
 
 
+# ---- Feedback Section ----
+st.markdown("---")
+with st.expander("📝 **Share Your Feedback** — Help improve this tool!", expanded=False):
+    st.markdown(
+        """
+        <iframe 
+            src="https://docs.google.com/forms/d/e/1FAIpQLSfguNON5rWmnOfwI4wxX5yzGuXkIB40v84-wycYgk3WIrH8DQ/viewform?embedded=true" 
+            width="100%" 
+            height="600" 
+            frameborder="0" 
+            marginheight="0" 
+            marginwidth="0"
+            style="border-radius: 10px;">
+            Loading…
+        </iframe>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.caption("Your feedback helps make this tool better. Thank you! 🙏")
+
 # ---- Footer ----
 st.markdown("---")
 if smart_mode:
