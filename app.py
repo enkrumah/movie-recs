@@ -3,6 +3,7 @@
 # -------------------------------
 
 import time
+from datetime import datetime
 import streamlit as st
 from src.data_loader import load_movies
 from src.recommender import recommend_movies
@@ -14,16 +15,237 @@ from src.llm import _get_client
 # ---- Streamlit page setup ----
 st.set_page_config(page_title="AI Movie Recommender", page_icon="🎬", layout="wide")
 
-st.title("🎬 AI Movie Recommender (MVP)")
+# ---- Theme Management ----
+# Determine if it's daytime (7am-7pm) for auto theme
+current_hour = datetime.now().hour
+is_daytime = 7 <= current_hour < 19
+
+# Initialize theme in session state (auto-detect based on time)
+if "theme" not in st.session_state:
+    st.session_state.theme = "light" if is_daytime else "dark"
+
+# Theme toggle in sidebar
+with st.sidebar:
+    st.markdown("### ⚙️ Settings")
+    theme_options = ["🌙 Dark", "☀️ Light", "🔄 Auto"]
+    theme_choice = st.radio(
+        "Theme",
+        theme_options,
+        index=0 if st.session_state.theme == "dark" else (1 if st.session_state.theme == "light" else 2),
+        horizontal=True,
+    )
+    
+    if theme_choice == "🌙 Dark":
+        st.session_state.theme = "dark"
+    elif theme_choice == "☀️ Light":
+        st.session_state.theme = "light"
+    else:  # Auto
+        st.session_state.theme = "light" if is_daytime else "dark"
+    
+    st.caption(f"Current time: {datetime.now().strftime('%I:%M %p')}")
+    if theme_choice == "🔄 Auto":
+        st.caption("☀️ Light: 7am-7pm | 🌙 Dark: 7pm-7am")
+
+# Apply theme-specific CSS
+is_light = st.session_state.theme == "light"
+
+if is_light:
+    # Light mode CSS
+    theme_css = """
+    <style>
+        /* Light mode overrides */
+        .stApp {
+            background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        
+        /* Accent color - warm coral */
+        .stButton > button {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .stButton > button:hover {
+            background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+        }
+        
+        /* Slider accent */
+        .stSlider > div > div > div > div {
+            background-color: #f97316 !important;
+        }
+        
+        /* Info box styling */
+        .info-box-light {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+            border: 1px solid #fed7aa;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 12px 0;
+        }
+        .info-box-light .title {
+            color: #ea580c;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .info-box-light .content {
+            color: #431407;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        /* Movie card light */
+        .movie-card-light {
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 14px 16px;
+            border-radius: 14px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .movie-card-light .title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 6px;
+            color: #1e293b;
+        }
+        .movie-card-light .score {
+            color: #64748b;
+        }
+        .movie-card-light .details {
+            color: #94a3b8;
+            font-size: 0.8rem;
+            margin-top: 4px;
+        }
+        
+        /* Summary box light */
+        .summary-box-light {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 1px solid #fcd34d;
+            padding: 14px 16px;
+            border-radius: 14px;
+            margin: 16px 0;
+        }
+        .summary-box-light .title {
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #92400e;
+        }
+        .summary-box-light .content {
+            color: #78350f;
+        }
+    </style>
+    """
+else:
+    # Dark mode CSS
+    theme_css = """
+    <style>
+        /* Dark mode - refined palette */
+        .stApp {
+            background: linear-gradient(180deg, #0f0f1a 0%, #1a1a2e 100%);
+        }
+        
+        /* Accent color - vibrant coral/pink */
+        .stButton > button {
+            background: linear-gradient(135deg, #e94560 0%, #c73e54 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .stButton > button:hover {
+            background: linear-gradient(135deg, #ff6b6b 0%, #e94560 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(233, 69, 96, 0.4);
+        }
+        
+        /* Slider accent - match coral */
+        .stSlider > div > div > div > div {
+            background-color: #e94560 !important;
+        }
+        
+        /* Info box styling */
+        .info-box-dark {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 1px solid #0f3460;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 12px 0;
+        }
+        .info-box-dark .title {
+            color: #e94560;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .info-box-dark .content {
+            color: #eaeaea;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        /* Movie card dark */
+        .movie-card-dark {
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%);
+            border: 1px solid #2a2a4a;
+            padding: 14px 16px;
+            border-radius: 14px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .movie-card-dark .title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin-bottom: 6px;
+            color: #ffffff;
+        }
+        .movie-card-dark .score {
+            color: #9aa0a6;
+        }
+        .movie-card-dark .details {
+            color: #6b7280;
+            font-size: 0.8rem;
+            margin-top: 4px;
+        }
+        
+        /* Summary box dark */
+        .summary-box-dark {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            border: 1px solid #312e81;
+            padding: 14px 16px;
+            border-radius: 14px;
+            margin: 16px 0;
+        }
+        .summary-box-dark .title {
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #a5b4fc;
+        }
+        .summary-box-dark .content {
+            color: #cbd5e1;
+        }
+    </style>
+    """
+
+st.markdown(theme_css, unsafe_allow_html=True)
+
+# ---- Main Content ----
+st.title("🎬 AI Movie Recommender")
 st.caption("Describe what you want to watch — by mood, theme, or vibe. \
 Example: _smart sci-fi, heist, no gore, under 2 hours_")
 
+# How it works box (theme-aware)
+box_class = "info-box-light" if is_light else "info-box-dark"
 st.markdown(
-    """
-    <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); 
-                border: 1px solid #0f3460; border-radius: 12px; padding: 16px 20px; margin: 12px 0;">
-        <div style="color: #e94560; font-weight: 600; margin-bottom: 8px;">✨ How it works</div>
-        <div style="color: #eaeaea; font-size: 0.95rem; line-height: 1.5;">
+    f"""
+    <div class="{box_class}">
+        <div class="title">✨ How it works</div>
+        <div class="content">
             This AI-powered tool uses <strong>semantic search</strong> to find movies that match your description — 
             not just keywords, but the actual <em>meaning</em> and <em>vibe</em> you're looking for. 
             It then explains <strong>why</strong> each movie fits your request.
@@ -60,7 +282,6 @@ examples = [
 ]
 for i, ex in enumerate(examples):
     if cols[i].button(ex.title()):
-        # Set the value BEFORE the text_area exists in this run
         st.session_state.query_text = ex
         st.session_state.auto_search = True
         if hasattr(st, "rerun"):
@@ -68,22 +289,14 @@ for i, ex in enumerate(examples):
 
 
 # 3) Now create the text area
-
-# ------------------------------------------------
-# Prefill logic (must run BEFORE the text area)
-# ------------------------------------------------
 if "pending_text" in st.session_state:
-    # put the suggestion directly into the widget's key before creation
     st.session_state.query_text = st.session_state.pop("pending_text")
 
-# ------------------------------------------------
-# Text area (no 'value=' when a key is used)
-# ------------------------------------------------
 user_text = st.text_area(
     "Describe what you're in the mood for:",
     height=120,
     placeholder="romantic drama about memory",
-    key="query_text",   # the widget will read from st.session_state.query_text
+    key="query_text",
 )
 
 
@@ -91,7 +304,6 @@ user_text = st.text_area(
 # AI-powered prompt suggestions (Responses API)
 # ---------------------------------------------
 if user_text:
-    # Re-generate suggestions only if user_text changed
     if "last_prefix" not in st.session_state or st.session_state["last_prefix"] != user_text:
         with st.spinner("Thinking of suggestions..."):
             try:
@@ -110,11 +322,9 @@ if user_text:
                 st.error(f"Error generating suggestions: {e}")
                 suggestions = []
 
-        # cache them
         st.session_state["last_suggestions"] = suggestions
         st.session_state["last_prefix"] = user_text
     else:
-        # reuse cached suggestions
         suggestions = st.session_state.get("last_suggestions", [])
 
     if suggestions:
@@ -151,18 +361,15 @@ def _cached_summary(query: str, movie_texts: tuple[str, ...], per_movie: bool):
 
 do_search = st.button("Recommend") or st.session_state.auto_search
 if do_search:
-    # Clear the auto flag so we don't loop
     st.session_state.auto_search = False
     query = st.session_state.query_text.strip()
 
     if not query:
         st.warning("Please enter a description to get recommendations.")
     else:
-        # Initialize timing variables
         retrieval_time = 0.0
         summary_time = 0.0
         
-        # Choose retrieval method based on Smart Mode toggle
         if smart_mode:
             with st.spinner("🧠 Smart ranking in progress... (retrieving → ranking → AI scoring)"):
                 try:
@@ -206,28 +413,28 @@ if do_search:
             
             st.caption(latency_text)
             
+            # Summary box (theme-aware)
             if summary_text:
+                summary_class = "summary-box-light" if is_light else "summary-box-dark"
                 st.markdown(
                     f"""
-                    <div style="background:#0f172a;border:1px solid #23324d;
-                                padding:14px 16px;border-radius:14px;margin:16px 0;">
-                    <div style="font-weight:700;margin-bottom:8px;">🧠 Why these picks fit your vibe</div>
-                    <div style="color:#cbd5e1;">{summary_text}</div>
+                    <div class="{summary_class}">
+                        <div class="title">🧠 Why these picks fit your vibe</div>
+                        <div class="content">{summary_text}</div>
                     </div>
                     """,
                     unsafe_allow_html=True,
                 )
-            # ---- end LLM summary ----
 
             st.subheader("🎯 Top Picks for You")
             cols = st.columns(2)
+            card_class = "movie-card-light" if is_light else "movie-card-dark"
+            
             for idx, r in enumerate(recs):
                 with cols[idx % 2]:
-                    # Show different scores based on mode
                     if smart_mode and "rank_score" in r:
                         score_label = "Rank Score"
                         score_value = r["rank_score"]
-                        # Build signal breakdown tooltip
                         signals = r.get("signals", {})
                         signal_details = (
                             f"Similarity: {signals.get('sim_score', 0):.2f} | "
@@ -242,13 +449,10 @@ if do_search:
                     
                     st.markdown(
                         f"""
-                        <div style="background:#111;border:1px solid #2a2a2a;
-                                    padding:14px 16px;border-radius:14px;margin-bottom:12px;">
-                        <div style="font-weight:700;font-size:1.05rem;margin-bottom:6px;">
-                            {r['text']}
-                        </div>
-                        <div style="color:#9aa0a6;">{score_label}: {score_value:.3f}</div>
-                        {f'<div style="color:#6b7280;font-size:0.8rem;margin-top:4px;">{signal_details}</div>' if signal_details else ''}
+                        <div class="{card_class}">
+                            <div class="title">{r['text']}</div>
+                            <div class="score">{score_label}: {score_value:.3f}</div>
+                            {f'<div class="details">{signal_details}</div>' if signal_details else ''}
                         </div>
                         """,
                         unsafe_allow_html=True,
