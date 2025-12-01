@@ -31,7 +31,7 @@ movie-recs/
 ├── app.py                     # Streamlit UI (main app)
 ├── embed_index.py             # Embedding builder script
 │
-├── artifacts/                 # Generated artifacts (not tracked in Git)
+├── artifacts/                 # Embeddings (tracked via Git LFS)
 │   ├── movie_vectors.npy
 │   ├── movie_ids.json
 │   └── movie_texts.json
@@ -88,9 +88,11 @@ This is loaded automatically via `src/client.py`.
 
 ---
 
-# 🧩 Generating Embedding Artifacts
+# 🧩 Embedding Artifacts
 
-Artifacts are **not stored in Git** and must be generated locally.
+Artifacts are stored via **Git LFS** (Large File Storage) and will download automatically when you clone.
+
+If you need to regenerate embeddings:
 
 ```bash
 python embed_index.py
@@ -100,12 +102,12 @@ This creates:
 
 ```
 artifacts/
-    movie_vectors.npy    # 9,742 movies × 3,072 dimensions
+    movie_vectors.npy    # 9,742 movies × 3,072 dimensions (~120MB)
     movie_ids.json
     movie_texts.json
 ```
 
-These files are required before running `app.py`.
+**Note:** The `.npy` file is tracked via Git LFS. Run `git lfs install` before cloning if you don't have LFS set up.
 
 ---
 
@@ -160,6 +162,17 @@ If users type a short fragment, the system suggests full search prompts.
 ### ✅ Clean, Responsive UI
 
 Two-column movie grid, quick examples, and session-state behavior.
+
+### ✅ Latency Tracking
+
+Real-time performance metrics displayed after each search:
+```
+⚡ Found 5 movies in 0.43s (Search: 0.31s → Summary: 0.12s)
+```
+
+### ✅ User Feedback Collection
+
+Embedded Google Form for collecting user feedback, with responses automatically saved to Google Sheets.
 
 ---
 
