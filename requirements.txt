@@ -1,8 +1,12 @@
-openai
-streamlit
-pandas
-numpy
-scikit-learn
-python-dotenv
-requests
-faiss-cpu
+# Core dependencies
+openai>=1.30.0
+streamlit>=1.32.0
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Vector search
+faiss-cpu>=1.7.4
+
+# Utilities
+python-dotenv>=1.0.0
+requests>=2.31.0

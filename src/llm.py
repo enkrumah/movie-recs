@@ -1,27 +1,17 @@
 # src/llm.py
+"""LLM-powered explanations and suggestions."""
 from __future__ import annotations
-from pathlib import Path
 from typing import List, Dict, Tuple
-import os
 
-from dotenv import load_dotenv
-from openai import OpenAI
+from src.client import get_openai_client
 
 DEFAULT_MODEL = "gpt-4o-mini"
-_client: OpenAI | None = None
 
-def _get_client() -> OpenAI:
-    global _client
-    if _client is None:
-        # Try .env (local) and st.secrets (Streamlit Cloud)
-        from dotenv import load_dotenv
-        import streamlit as st
-        load_dotenv(Path(".env"))
-        api_key = os.getenv("OPENAI_API_KEY") or st.secrets.get("OPENAI_API_KEY")
-        if not api_key:
-            raise RuntimeError("OPENAI_API_KEY not set in environment or Streamlit secrets")
-        _client = OpenAI(api_key=api_key)
-    return _client
+
+# Re-export for backward compatibility (used by app.py for suggestions)
+def _get_client():
+    """Wrapper for backward compatibility with app.py imports."""
+    return get_openai_client()
 
 
 def summarize_recommendations(
@@ -30,6 +20,18 @@ def summarize_recommendations(
     model: str = DEFAULT_MODEL,
     include_per_movie: bool = False,
 ) -> Tuple[str, List[str]]:
+    """
+    Generate an LLM summary explaining why the recommendations fit the query.
+    
+    Args:
+        query: User's search query
+        recs: List of recommendation dicts with 'text' field
+        model: OpenAI model to use
+        include_per_movie: If True, also generate per-movie explanations
+    
+    Returns:
+        Tuple of (summary_text, list_of_per_movie_explanations)
+    """
     if not recs:
         return ("", [])
 
@@ -45,12 +47,14 @@ def summarize_recommendations(
         "Write a brief summary for why these picks fit together."
     )
 
-    client = _get_client()
+    client = get_openai_client()
     try:
         resp = client.chat.completions.create(
             model=model,
-            messages=[{"role": "system", "content": system},
-                      {"role": "user", "content": user}],
+            messages=[
+                {"role": "system", "content": system},
+                {"role": "user", "content": user},
+            ],
             temperature=0.5,
             max_tokens=220,
         )
@@ -58,7 +62,7 @@ def summarize_recommendations(
     except Exception as e:
         summary = f"(LLM summary unavailable: {e})"
 
-    per_movie = []
+    per_movie: List[str] = []
     if include_per_movie:
         user2 = (
             "For each movie, provide ONE short line why it matches the user's request "
@@ -68,8 +72,10 @@ def summarize_recommendations(
         try:
             r2 = client.chat.completions.create(
                 model=model,
-                messages=[{"role": "system", "content": "Be brief and helpful."},
-                          {"role": "user", "content": user2}],
+                messages=[
+                    {"role": "system", "content": "Be brief and helpful."},
+                    {"role": "user", "content": user2},
+                ],
                 temperature=0.4,
                 max_tokens=300,
             )

@@ -1,0 +1,222 @@
+{
+  "metadata": {
+    "description": "Evaluation dataset for movie recommender system",
+    "version": "1.0",
+    "num_queries": 30,
+    "created": "2024",
+    "notes": "Ground truth based on MovieLens ml-latest-small dataset. Movie IDs correspond to movieId in movies.csv."
+  },
+  "queries": [
+    {
+      "id": "q01",
+      "query": "mind-bending sci-fi with a twist",
+      "category": "sci-fi",
+      "relevant": ["2571", "4226", "1240", "32", "541", "2571"],
+      "relevant_titles": ["The Matrix", "Memento", "The Terminator", "Twelve Monkeys", "Blade Runner"]
+    },
+    {
+      "id": "q02", 
+      "query": "epic space adventure",
+      "category": "sci-fi",
+      "relevant": ["260", "1196", "1210", "2628", "5378"],
+      "relevant_titles": ["Star Wars: A New Hope", "Empire Strikes Back", "Return of the Jedi", "Phantom Menace", "Attack of the Clones"]
+    },
+    {
+      "id": "q03",
+      "query": "classic crime thriller with a twist ending",
+      "category": "crime",
+      "relevant": ["50", "296", "47", "858", "1221"],
+      "relevant_titles": ["The Usual Suspects", "Pulp Fiction", "Se7en", "The Godfather", "Godfather Part II"]
+    },
+    {
+      "id": "q04",
+      "query": "gritty mob movie",
+      "category": "crime",
+      "relevant": ["858", "1221", "1213", "16", "2023"],
+      "relevant_titles": ["The Godfather", "Godfather Part II", "Goodfellas", "Casino", "Godfather Part III"]
+    },
+    {
+      "id": "q05",
+      "query": "romantic comedy about finding love",
+      "category": "romance",
+      "relevant": ["1307", "597", "539", "2671", "357"],
+      "relevant_titles": ["When Harry Met Sally", "Pretty Woman", "Sleepless in Seattle", "Notting Hill", "Four Weddings and a Funeral"]
+    },
+    {
+      "id": "q06",
+      "query": "tearjerker romance drama",
+      "category": "romance",
+      "relevant": ["8533", "1721", "7361", "17", "25"],
+      "relevant_titles": ["The Notebook", "Titanic", "Eternal Sunshine of the Spotless Mind", "Sense and Sensibility", "Leaving Las Vegas"]
+    },
+    {
+      "id": "q07",
+      "query": "inspiring sports underdog story",
+      "category": "sports",
+      "relevant": ["524", "3360", "1954", "3916", "7263"],
+      "relevant_titles": ["Rudy", "Hoosiers", "Rocky", "Remember the Titans", "Miracle"]
+    },
+    {
+      "id": "q08",
+      "query": "boxing drama",
+      "category": "sports",
+      "relevant": ["1954", "1228", "2409", "2410", "30707"],
+      "relevant_titles": ["Rocky", "Raging Bull", "Rocky II", "Rocky III", "Million Dollar Baby"]
+    },
+    {
+      "id": "q09",
+      "query": "world war 2 historical drama",
+      "category": "war",
+      "relevant": ["527", "2028", "110", "1704", "318"],
+      "relevant_titles": ["Schindler's List", "Saving Private Ryan", "Braveheart", "Good Will Hunting", "Shawshank Redemption"]
+    },
+    {
+      "id": "q10",
+      "query": "action movie with explosions",
+      "category": "action",
+      "relevant": ["1036", "165", "589", "1370", "6"],
+      "relevant_titles": ["Die Hard", "Die Hard With a Vengeance", "Terminator 2", "Die Hard 2", "Heat"]
+    },
+    {
+      "id": "q11",
+      "query": "scary horror movie",
+      "category": "horror",
+      "relevant": ["1258", "1219", "1997", "1982", "2160"],
+      "relevant_titles": ["The Shining", "Psycho", "The Exorcist", "Halloween", "Rosemary's Baby"]
+    },
+    {
+      "id": "q12",
+      "query": "supernatural horror thriller",
+      "category": "horror",
+      "relevant": ["1350", "1994", "103688", "5679", "6242"],
+      "relevant_titles": ["The Omen", "Poltergeist", "The Conjuring", "The Ring (2002)", "Ringu"]
+    },
+    {
+      "id": "q13",
+      "query": "family animated adventure",
+      "category": "animation",
+      "relevant": ["1", "2", "48", "5618", "34"],
+      "relevant_titles": ["Toy Story", "Jumanji", "Pocahontas", "Spirited Away", "Babe"]
+    },
+    {
+      "id": "q14",
+      "query": "magical fantasy quest",
+      "category": "fantasy",
+      "relevant": ["4993", "5952", "7153", "1197", "4896"],
+      "relevant_titles": ["LOTR Fellowship", "LOTR Two Towers", "LOTR Return of the King", "Princess Bride", "Harry Potter 1"]
+    },
+    {
+      "id": "q15",
+      "query": "Christopher Nolan style thriller",
+      "category": "director-style",
+      "relevant": ["4226", "2571", "2959", "47", "50"],
+      "relevant_titles": ["Memento", "The Matrix", "Fight Club", "Se7en", "The Usual Suspects"]
+    },
+    {
+      "id": "q16",
+      "query": "feel-good comedy",
+      "category": "comedy",
+      "relevant": ["356", "1270", "39", "1704", "5299"],
+      "relevant_titles": ["Forrest Gump", "Back to the Future", "Clueless", "Good Will Hunting", "My Big Fat Greek Wedding"]
+    },
+    {
+      "id": "q17",
+      "query": "prison drama redemption story",
+      "category": "drama",
+      "relevant": ["318", "36", "858", "1213", "296"],
+      "relevant_titles": ["Shawshank Redemption", "Dead Man Walking", "The Godfather", "Goodfellas", "Pulp Fiction"]
+    },
+    {
+      "id": "q18",
+      "query": "time travel adventure",
+      "category": "sci-fi",
+      "relevant": ["1270", "2011", "2012", "32", "589"],
+      "relevant_titles": ["Back to the Future", "BTTF Part II", "BTTF Part III", "Twelve Monkeys", "Terminator 2"]
+    },
+    {
+      "id": "q19",
+      "query": "alien invasion sci-fi",
+      "category": "sci-fi",
+      "relevant": ["1214", "1200", "1320", "196", "426"],
+      "relevant_titles": ["Alien", "Aliens", "Alien 3", "Species", "Body Snatchers"]
+    },
+    {
+      "id": "q20",
+      "query": "superhero action movie",
+      "category": "action",
+      "relevant": ["5349", "592", "153", "2640", "2641"],
+      "relevant_titles": ["Spider-Man", "Batman (1989)", "Batman Forever", "Superman", "Superman II"]
+    },
+    {
+      "id": "q21",
+      "query": "dinosaur adventure",
+      "category": "adventure",
+      "relevant": ["480", "1544", "4638"],
+      "relevant_titles": ["Jurassic Park", "Lost World", "Jurassic Park III"]
+    },
+    {
+      "id": "q22",
+      "query": "90s nostalgia action",
+      "category": "action",
+      "relevant": ["2571", "589", "1036", "165", "480"],
+      "relevant_titles": ["The Matrix", "Terminator 2", "Die Hard", "Die Hard 3", "Jurassic Park"]
+    },
+    {
+      "id": "q23",
+      "query": "psychological thriller mind games",
+      "category": "thriller",
+      "relevant": ["593", "4226", "47", "1219", "2959"],
+      "relevant_titles": ["Silence of the Lambs", "Memento", "Se7en", "Psycho", "Fight Club"]
+    },
+    {
+      "id": "q24",
+      "query": "coming of age drama",
+      "category": "drama",
+      "relevant": ["1246", "1704", "39", "356", "3071"],
+      "relevant_titles": ["Dead Poets Society", "Good Will Hunting", "Clueless", "Forrest Gump", "Stand and Deliver"]
+    },
+    {
+      "id": "q25",
+      "query": "heist crime caper",
+      "category": "crime",
+      "relevant": ["6", "296", "50", "21", "1213"],
+      "relevant_titles": ["Heat", "Pulp Fiction", "The Usual Suspects", "Get Shorty", "Goodfellas"]
+    },
+    {
+      "id": "q26",
+      "query": "French or European art film",
+      "category": "foreign",
+      "relevant": ["4973", "215", "29", "5618"],
+      "relevant_titles": ["Amelie", "Before Sunrise", "City of Lost Children", "Spirited Away"]
+    },
+    {
+      "id": "q27",
+      "query": "slasher horror 80s style",
+      "category": "horror",
+      "relevant": ["1347", "1982", "1407", "2459", "366"],
+      "relevant_titles": ["Nightmare on Elm Street", "Halloween", "Scream", "Texas Chainsaw", "New Nightmare"]
+    },
+    {
+      "id": "q28",
+      "query": "epic historical war battle",
+      "category": "war",
+      "relevant": ["110", "2028", "527", "3578", "41"],
+      "relevant_titles": ["Braveheart", "Saving Private Ryan", "Schindler's List", "Gladiator", "Richard III"]
+    },
+    {
+      "id": "q29",
+      "query": "witty British comedy",
+      "category": "comedy",
+      "relevant": ["4246", "6942", "2671", "357", "8969"],
+      "relevant_titles": ["Bridget Jones", "Love Actually", "Notting Hill", "Four Weddings", "Bridget Jones 2"]
+    },
+    {
+      "id": "q30",
+      "query": "thought-provoking drama about life",
+      "category": "drama",
+      "relevant": ["318", "356", "1704", "47099", "7361"],
+      "relevant_titles": ["Shawshank Redemption", "Forrest Gump", "Good Will Hunting", "Pursuit of Happyness", "Eternal Sunshine"]
+    }
+  ]
+}
+

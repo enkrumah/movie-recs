@@ -1,10 +1,9 @@
 # Environment variables and API keys
 .env
 
-# Generated artifacts and data
-artifacts/
-
 # System files
 .DS_Store
 __pycache__/
 *.pyc
+
+# Note: artifacts/ is tracked via Git LFS for deployment

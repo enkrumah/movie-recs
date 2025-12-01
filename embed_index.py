@@ -1,14 +1,15 @@
-# src/embed_index.py
+# embed_index.py
+"""Build embedding index for the movie catalog."""
 from __future__ import annotations
-import os, json, math, time
+import json
+import math
+import time
 from pathlib import Path
 from typing import List, Dict
 
 import numpy as np
-import pandas as pd
-from dotenv import load_dotenv
-from openai import OpenAI
 
+from src.client import get_openai_client
 from src.data_loader import load_movies, build_movie_text
 
 # -------------------------------
@@ -18,29 +19,35 @@ EMBED_MODEL = "text-embedding-3-large"  # 3072-dim embeddings
 ARTIFACTS_DIR = Path("artifacts")
 ARTIFACTS_DIR.mkdir(exist_ok=True, parents=True)
 
-# -------------------------------
-# CLIENT
-# -------------------------------
-def _get_client() -> OpenAI:
-    load_dotenv(Path(".env"))  # explicitly load .env
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        raise RuntimeError("OPENAI_API_KEY not set. Put it in .env")
-    return OpenAI(api_key=api_key)
 
 # -------------------------------
 # BATCH EMBEDDING
 # -------------------------------
-def _embed_batch(client: OpenAI, texts: List[str]) -> List[List[float]]:
+def _embed_batch(texts: List[str]) -> List[List[float]]:
+    """Embed a batch of texts using OpenAI."""
+    client = get_openai_client()
     response = client.embeddings.create(model=EMBED_MODEL, input=texts)
     return [d.embedding for d in response.data]
+
 
 # -------------------------------
 # MAIN BUILD FUNCTION
 # -------------------------------
 def build_embeddings(batch_size: int = 256) -> Dict[str, str]:
-    client = _get_client()
-
+    """
+    Build and save embedding artifacts for all movies.
+    
+    Creates:
+        - artifacts/movie_vectors.npy: NumPy array of embeddings
+        - artifacts/movie_ids.json: List of movie IDs
+        - artifacts/movie_texts.json: List of movie text descriptions
+    
+    Args:
+        batch_size: Number of texts to embed per API call
+    
+    Returns:
+        Dict with count, dimensions, and output path
+    """
     # 1) Load + prepare text data
     movies = load_movies()
     movies_txt = build_movie_text(movies)
@@ -57,27 +64,30 @@ def build_embeddings(batch_size: int = 256) -> Dict[str, str]:
         batch = texts[s:e]
         print(f"Embedding batch {i+1}/{n_batches} ({s}-{e})")
 
-        # retry logic
+        # Retry logic for robustness
         for attempt in range(3):
             try:
-                vecs = _embed_batch(client, batch)
+                vecs = _embed_batch(batch)
                 vectors.extend(vecs)
                 break
             except Exception as err:
                 print(f"Error: {err} (attempt {attempt+1}/3)")
                 time.sleep(2 * (attempt + 1))
 
-    # 3) Save results
+    # 2) Save results
     vecs_np = np.asarray(vectors, dtype=np.float32)
     np.save(ARTIFACTS_DIR / "movie_vectors.npy", vecs_np)
     (ARTIFACTS_DIR / "movie_ids.json").write_text(json.dumps(ids))
     (ARTIFACTS_DIR / "movie_texts.json").write_text(json.dumps(texts))
+
+    print(f"✅ Saved {len(ids)} embeddings to {ARTIFACTS_DIR}/")
 
     return {
         "count": str(len(ids)),
         "dim": str(vecs_np.shape[1] if vecs_np.size else 0),
         "path": str(ARTIFACTS_DIR / "movie_vectors.npy"),
     }
+
 
 # -------------------------------
 # RUNNER
