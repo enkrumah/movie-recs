@@ -534,11 +534,11 @@ if do_search:
             with st.spinner("Finding movies..."):
                 try:
                     t_start = time.perf_counter()
-                recs = recommend_movies(query, k=k)
+                    recs = recommend_movies(query, k=k)
                     retrieval_time = time.perf_counter() - t_start
-            except Exception as e:
+                except Exception as e:
                     st.error(f"Error: {e}")
-                recs = []
+                    recs = []
 
         if not recs:
             st.info("No results found. Try a different description.")
