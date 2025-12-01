@@ -18,6 +18,21 @@ st.title("🎬 AI Movie Recommender (MVP)")
 st.caption("Describe what you want to watch — by mood, theme, or vibe. \
 Example: _smart sci-fi, heist, no gore, under 2 hours_")
 
+st.markdown(
+    """
+    <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); 
+                border: 1px solid #0f3460; border-radius: 12px; padding: 16px 20px; margin: 12px 0;">
+        <div style="color: #e94560; font-weight: 600; margin-bottom: 8px;">✨ How it works</div>
+        <div style="color: #eaeaea; font-size: 0.95rem; line-height: 1.5;">
+            This AI-powered tool uses <strong>semantic search</strong> to find movies that match your description — 
+            not just keywords, but the actual <em>meaning</em> and <em>vibe</em> you're looking for. 
+            It then explains <strong>why</strong> each movie fits your request.
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
 # ---- Load movie data (cached) ----
 @st.cache_data(show_spinner=False)
 def get_movies_df():
