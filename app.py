@@ -49,12 +49,10 @@ if is_light:
     # LIGHT MODE - Premium Minimal
     theme_css = """
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-        
         /* Base */
         .stApp {
             background: linear-gradient(180deg, #FAFAFC 0%, #F1F1F4 100%);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         
         /* Hide default Streamlit elements for cleaner look */
@@ -63,7 +61,7 @@ if is_light:
         
         /* Typography */
         h1, h2, h3, h4, h5, h6 {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
             font-weight: 600 !important;
             letter-spacing: 0.3px !important;
             color: #1C1C1E !important;
@@ -80,7 +78,7 @@ if is_light:
             border: none !important;
             border-radius: 8px !important;
             padding: 8px 16px !important;
-            font-family: 'Inter', sans-serif !important;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
             font-weight: 500 !important;
             transition: all 0.2s ease !important;
         }
@@ -106,7 +104,7 @@ if is_light:
             border: 1px solid #E5E5EA !important;
             border-radius: 8px !important;
             color: #1C1C1E !important;
-            font-family: 'Inter', sans-serif !important;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
         .stTextArea textarea:focus, .stTextInput input:focus {
             border-color: #FF6B4A !important;
@@ -136,7 +134,7 @@ if is_light:
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
         .card-light .card-title {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-weight: 600;
             font-size: 1rem;
             color: #1C1C1E;
@@ -144,12 +142,12 @@ if is_light:
             line-height: 1.4;
         }
         .card-light .card-score {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-size: 0.875rem;
             color: #4A4A4A;
         }
         .card-light .card-details {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-size: 0.75rem;
             color: #6B6B6B;
             margin-top: 8px;
@@ -166,7 +164,7 @@ if is_light:
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
         .info-box-light .info-title {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-weight: 600;
             font-size: 0.875rem;
             color: #FF6B4A;
@@ -174,7 +172,7 @@ if is_light:
             letter-spacing: 0.3px;
         }
         .info-box-light .info-content {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-size: 0.9rem;
             color: #4A4A4A;
             line-height: 1.6;
@@ -190,14 +188,14 @@ if is_light:
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
         .summary-box-light .summary-title {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-weight: 600;
             font-size: 0.9rem;
             color: #1C1C1E;
             margin-bottom: 8px;
         }
         .summary-box-light .summary-content {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-size: 0.9rem;
             color: #4A4A4A;
             line-height: 1.6;
@@ -213,12 +211,10 @@ else:
     # DARK MODE - Cinematic Vibes
     theme_css = """
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-        
         /* Base */
         .stApp {
             background: #0E0F13;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
         
         /* Vignette effect */
@@ -240,7 +236,7 @@ else:
         
         /* Typography */
         h1, h2, h3, h4, h5, h6 {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
             font-weight: 600 !important;
             letter-spacing: 0.3px !important;
             color: #F5F5F7 !important;
@@ -257,7 +253,7 @@ else:
             border: none !important;
             border-radius: 8px !important;
             padding: 8px 16px !important;
-            font-family: 'Inter', sans-serif !important;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
             font-weight: 500 !important;
             transition: all 0.2s ease !important;
         }
@@ -283,7 +279,7 @@ else:
             border: 1px solid #2A2B33 !important;
             border-radius: 8px !important;
             color: #F5F5F7 !important;
-            font-family: 'Inter', sans-serif !important;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
         .stTextArea textarea:focus, .stTextInput input:focus {
             border-color: #FF6B4A !important;
@@ -322,7 +318,7 @@ else:
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
         }
         .card-dark .card-title {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-weight: 600;
             font-size: 1rem;
             color: #F5F5F7;
@@ -330,12 +326,12 @@ else:
             line-height: 1.4;
         }
         .card-dark .card-score {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-size: 0.875rem;
             color: #A9ABB6;
         }
         .card-dark .card-details {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-size: 0.75rem;
             color: #6B6B73;
             margin-top: 8px;
@@ -352,7 +348,7 @@ else:
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
         }
         .info-box-dark .info-title {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-weight: 600;
             font-size: 0.875rem;
             color: #FF6B4A;
@@ -360,7 +356,7 @@ else:
             letter-spacing: 0.3px;
         }
         .info-box-dark .info-content {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-size: 0.9rem;
             color: #A9ABB6;
             line-height: 1.6;
@@ -376,14 +372,14 @@ else:
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
         }
         .summary-box-dark .summary-title {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-weight: 600;
             font-size: 0.9rem;
             color: #F5F5F7;
             margin-bottom: 8px;
         }
         .summary-box-dark .summary-content {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             font-size: 0.9rem;
             color: #A9ABB6;
             line-height: 1.6;
@@ -451,7 +447,7 @@ for i, ex in enumerate(examples):
     if cols[i].button(ex.title(), key=f"ex_{i}"):
         st.session_state.query_text = ex
         st.session_state.auto_search = True
-        st.rerun()
+            st.rerun()
 
 # Text area
 if "pending_text" in st.session_state:
@@ -534,11 +530,11 @@ if do_search:
             with st.spinner("Finding movies..."):
                 try:
                     t_start = time.perf_counter()
-                    recs = recommend_movies(query, k=k)
+                recs = recommend_movies(query, k=k)
                     retrieval_time = time.perf_counter() - t_start
-                except Exception as e:
+            except Exception as e:
                     st.error(f"Error: {e}")
-                    recs = []
+                recs = []
 
         if not recs:
             st.info("No results found. Try a different description.")
