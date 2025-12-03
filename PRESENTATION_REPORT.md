@@ -7,7 +7,7 @@
 | Version | Live Demo | Repository |
 |---------|-----------|------------|
 | **V1 (Prototype)** | [movievibesai.streamlit.app](https://movievibesai.streamlit.app) | [github.com/enkrumah/movie-recs](https://github.com/enkrumah/movie-recs) |
-| **V2 (Production)** | [vybemoves.up.railway.app](https://vybemoves.up.railway.app) | [github.com/enkrumah/movie-recs-v2](https://github.com/enkrumah/movie-recs-v2) |
+| **V2 (Production)** | [movie-recs-v2-production.up.railway.app](https://movie-recs-v2-production.up.railway.app) | [github.com/enkrumah/movie-recs-v2](https://github.com/enkrumah/movie-recs-v2) |
 
 ---
 
@@ -255,7 +255,7 @@ taste_vector = α * liked_embedding + (1-α) * taste_vector
 
 ## 7. V2 Demo
 
-### Live: [vybemoves.up.railway.app](https://vybemoves.up.railway.app)
+### Live: [movie-recs-v2-production.up.railway.app](https://movie-recs-v2-production.up.railway.app)
 
 **Features to Show:**
 
@@ -406,7 +406,7 @@ ranked          0.9579    0.8200       1.0000     0.9500
 | Resource | URL |
 |----------|-----|
 | V1 Live Demo | [movievibesai.streamlit.app](https://movievibesai.streamlit.app) |
-| V2 Live Demo | [vybemoves.up.railway.app](https://vybemoves.up.railway.app) |
+| V2 Live Demo | [movie-recs-v2-production.up.railway.app](https://movie-recs-v2-production.up.railway.app) |
 | V1 GitHub | [github.com/enkrumah/movie-recs](https://github.com/enkrumah/movie-recs) |
 | V2 GitHub | [github.com/enkrumah/movie-recs-v2](https://github.com/enkrumah/movie-recs-v2) |
 
